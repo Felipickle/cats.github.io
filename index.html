@@ -1,66 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Super Cool Website</title>
+    <meta charset="UTF-8">
+    <title>My Sleek Website</title>
     <style>
+        /* Body and background */
         body {
-            background-color: #000000;
-            color: #00ffff; /* teal text */
-            font-family: 'Verdana', sans-serif;
-            text-align: center;
+            margin: 0;
             padding: 50px;
+            font-family: 'Verdana', sans-serif;
+            background-color: #000000;
+            color: #00ced1; /* blue-teal text */
+            text-align: center;
+            overflow-x: hidden;
         }
 
+        /* Header */
         h1 {
-            color: #00ffff;
-            text-shadow: 2px 2px #ffffff;
             font-size: 50px;
+            color: #00ced1;
+            text-shadow: 2px 2px #ffffff;
+            margin-bottom: 10px;
         }
 
+        /* Logo placeholder */
+        #logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #00ced1, #008b8b);
+            border-radius: 20%;
+            display: inline-block;
+            box-shadow: 0 0 20px #00ced1;
+        }
+
+        /* Paragraph */
         p {
             font-size: 22px;
+            margin-bottom: 30px;
         }
 
+        /* Button */
         button {
             padding: 15px 30px;
             font-size: 20px;
             cursor: pointer;
-            background-color: #00ffff;
+            background-color: #00ced1;
             color: #000000;
             border: none;
             border-radius: 10px;
-            box-shadow: 0 0 20px #00ffff;
+            box-shadow: 0 0 20px #00ced1;
             margin: 10px;
+            transition: all 0.3s ease;
         }
 
         button:hover {
             box-shadow: 0 0 30px #ffffff;
+            transform: scale(1.1);
         }
 
+        /* Visit counter */
         #visits {
             margin-top: 30px;
             font-size: 18px;
             color: #ffffff;
         }
+
+        /* Hexagon shapes */
+        .hexagon {
+            width: 100px;
+            height: 55px;
+            background-color: #00ced1;
+            margin: 10px;
+            display: inline-block;
+            position: relative;
+            clip-path: polygon(
+                25% 0%, 75% 0%, 
+                100% 50%, 75% 100%, 
+                25% 100%, 0% 50%
+            );
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hexagon:hover {
+            transform: rotate(10deg) scale(1.2);
+            box-shadow: 0 0 20px #00ced1;
+        }
+
+        /* Hexagon container */
+        #hex-container {
+            margin-top: 40px;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>💻 My Black & Teal Website 💻</h1>
-    <p>Welcome! This site is awesome and super cool.</p>
+    <!-- Logo -->
+    <div id="logo"></div>
 
-    <button onclick="alert('You clicked the awesome button!')">Click Me!</button>
+    <!-- Header -->
+    <h1>Welcome to My Sleek Website</h1>
+    <p>Check out these cool hexagons and see how many visits we have!</p>
 
+    <!-- Button -->
+    <button onclick="alert('You clicked the button!')">Click Me!</button>
+
+    <!-- Visit counter -->
     <div id="visits"></div>
 
+    <!-- Hexagons -->
+    <div id="hex-container">
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+    </div>
+
+    <!-- Global visit counter using CountAPI -->
     <script>
-        // Visit counter (per browser)
-        let visits = localStorage.getItem('visits') || 0;
-        visits++;
-        localStorage.setItem('visits', visits);
-        document.getElementById('visits').innerText = "You have visited this page " + visits + " times!";
+        fetch('https://api.countapi.xyz/hit/yourusername/awesomewebsite')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('visits').innerText = 
+            "This website has been visited " + data.value + " times!";
+        });
     </script>
 
 </body>
 </html>
-
