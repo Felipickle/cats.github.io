@@ -2,36 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Sleek Website</title>
+    <title>Cozy Cat Winter</title>
     <style>
         /* Body and background */
         body {
             margin: 0;
             padding: 50px;
-            font-family: 'Verdana', sans-serif;
-            background-color: #000000;
-            color: #00ced1; /* blue-teal text */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(to bottom, #e0f7fa, #ffffff); /* soft winter blue to white */
+            color: #333333;
             text-align: center;
-            overflow-x: hidden;
         }
 
         /* Header */
         h1 {
             font-size: 50px;
-            color: #00ced1;
-            text-shadow: 2px 2px #ffffff;
+            color: #00796b; /* cozy teal-blue */
             margin-bottom: 10px;
         }
 
-        /* Logo placeholder */
+        /* Logo / cat image placeholder */
         #logo {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             margin-bottom: 30px;
-            background: linear-gradient(135deg, #00ced1, #008b8b);
-            border-radius: 20%;
+            background-color: #ffcc80; /* soft warm color */
+            border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 20px #00ced1;
+            box-shadow: 0 0 15px #b0bec5;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png'); /* cute cat icon */
+            background-size: cover;
+            background-position: center;
         }
 
         /* Paragraph */
@@ -45,32 +46,32 @@
             padding: 15px 30px;
             font-size: 20px;
             cursor: pointer;
-            background-color: #00ced1;
-            color: #000000;
+            background-color: #ffcc80;
+            color: #333333;
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 20px #00ced1;
+            border-radius: 15px;
+            box-shadow: 0 0 15px #b0bec5;
             margin: 10px;
             transition: all 0.3s ease;
         }
 
         button:hover {
-            box-shadow: 0 0 30px #ffffff;
             transform: scale(1.1);
+            box-shadow: 0 0 25px #ffcc80;
         }
 
         /* Visit counter */
         #visits {
             margin-top: 30px;
             font-size: 18px;
-            color: #ffffff;
+            color: #555555;
         }
 
-        /* Hexagon shapes */
-        .hexagon {
-            width: 100px;
-            height: 55px;
-            background-color: #00ced1;
+        /* Snowflake hexagon shapes */
+        .snowflake {
+            width: 80px;
+            height: 80px;
+            background-color: #b3e5fc;
             margin: 10px;
             display: inline-block;
             position: relative;
@@ -80,53 +81,3 @@
                 25% 100%, 0% 50%
             );
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .hexagon:hover {
-            transform: rotate(10deg) scale(1.2);
-            box-shadow: 0 0 20px #00ced1;
-        }
-
-        /* Hexagon container */
-        #hex-container {
-            margin-top: 40px;
-        }
-
-    </style>
-</head>
-<body>
-
-    <!-- Logo -->
-    <div id="logo"></div>
-
-    <!-- Header -->
-    <h1>Welcome to My Sleek Website</h1>
-    <p>Check out these cool hexagons and see how many visits we have!</p>
-
-    <!-- Button -->
-    <button onclick="alert('You clicked the button!')">Click Me!</button>
-
-    <!-- Visit counter -->
-    <div id="visits"></div>
-
-    <!-- Hexagons -->
-    <div id="hex-container">
-        <div class="hexagon"></div>
-        <div class="hexagon"></div>
-        <div class="hexagon"></div>
-        <div class="hexagon"></div>
-        <div class="hexagon"></div>
-    </div>
-
-    <!-- Global visit counter using CountAPI -->
-    <script>
-        fetch('https://api.countapi.xyz/hit/yourusername/awesomewebsite')
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('visits').innerText = 
-            "This website has been visited " + data.value + " times!";
-        });
-    </script>
-
-</body>
-</html>
