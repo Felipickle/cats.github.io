@@ -35,10 +35,13 @@
             background-position: center;
         }
 
-        /* Paragraph */
+        /* Paragraphs */
         p {
-            font-size: 22px;
-            margin-bottom: 30px;
+            font-size: 20px;
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Button */
@@ -81,3 +84,68 @@
                 25% 100%, 0% 50%
             );
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .snowflake:hover {
+            transform: rotate(15deg) scale(1.2);
+            box-shadow: 0 0 15px #81d4fa;
+        }
+
+        /* Container for snowflakes */
+        #snow-container {
+            margin-top: 40px;
+        }
+
+        /* Subheader */
+        h2 {
+            color: #00796b;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo -->
+    <div id="logo"></div>
+
+    <!-- Header -->
+    <h1>Welcome to Cozy Cat Winter</h1>
+
+    <!-- Intro text -->
+    <p>Stay warm and enjoy some cute cats this winter! Here you'll find cozy cat illustrations and a little winter magic to brighten your day.</p>
+
+    <!-- Button -->
+    <button onclick="alert('You clicked the cozy button!')">Click Me!</button>
+
+    <!-- More text / about cats -->
+    <h2>About Cats</h2>
+    <p>Cats are known for their playful and curious nature. They love warm places, soft blankets, and spending time with people who care for them. Winter is the perfect time to cuddle with a cat and enjoy some cozy moments!</p>
+
+    <h2>Fun Winter Tip</h2>
+    <p>Try adding a small blanket or a soft pillow near your cat’s favorite spot to make them feel extra cozy. Watching cats play or sleep can also be a relaxing winter activity for you!</p>
+
+    <!-- Visit counter -->
+    <div id="visits"></div>
+
+    <!-- Snowflake hexagons -->
+    <div id="snow-container">
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+    </div>
+
+    <!-- Global visit counter using CountAPI -->
+    <script>
+        fetch('https://api.countapi.xyz/hit/yourusername/cozycatsite')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('visits').innerText = 
+            "This website has been visited " + data.value + " times!";
+        });
+    </script>
+
+</body>
+</html>
