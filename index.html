@@ -2,53 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daily Cat</title>
+    <title>Cozy Digital Pet</title>
     <style>
         body {
             margin: 0;
             padding: 50px;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(to bottom, #f0f8ff, #ffffff);
-            color: #333333;
+            background: linear-gradient(to bottom, #fff8e1, #ffe0b2);
+            color: #333;
             text-align: center;
         }
 
         h1 {
             font-size: 50px;
-            color: #00796b;
+            color: #ff7043;
             margin-bottom: 20px;
         }
 
-        #cat-image {
-            width: 300px;
-            height: 300px;
+        #pet-image {
+            width: 250px;
+            height: 250px;
             border-radius: 20px;
             object-fit: cover;
             box-shadow: 0 0 15px #b0bec5;
             margin-bottom: 20px;
         }
 
-        #cat-title {
-            font-size: 28px;
-            color: #ff6f61;
-            margin-bottom: 10px;
-        }
-
-        #cat-subtitle {
-            font-size: 20px;
-            margin-bottom: 30px;
+        #username-display {
+            font-size: 22px;
+            margin-bottom: 20px;
         }
 
         button {
             padding: 15px 30px;
-            font-size: 20px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 12px;
+            border: none;
             cursor: pointer;
             background-color: #ffcc80;
-            color: #333333;
-            border: none;
-            border-radius: 15px;
             box-shadow: 0 0 15px #b0bec5;
-            margin: 10px;
             transition: all 0.3s ease;
         }
 
@@ -57,87 +50,147 @@
             box-shadow: 0 0 25px #ffcc80;
         }
 
-        #visits {
+        #stats {
             margin-top: 30px;
-            font-size: 18px;
-            color: #555555;
+            font-size: 20px;
         }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>🐱 Daily Cat</h1>
+    <h1>Cozy Digital Pet</h1>
 
-    <!-- Cat image and text -->
-    <img id="cat-image" src="" alt="Daily Cat">
-    <div id="cat-title"></div>
-    <div id="cat-subtitle"></div>
+    <!-- Username setup -->
+    <div id="username-section">
+        <input type="text" id="username-input" placeholder="Enter your username">
+        <button onclick="setUsername()">Start</button>
+    </div>
 
-    <button onclick="showRandomCat()">See Another Cat!</button>
+    <div id="username-display"></div>
 
-    <!-- Visit counter -->
-    <div id="visits"></div>
+    <!-- Pet selection -->
+    <div id="pet-selection" style="display:none;">
+        <p>Choose your pet:</p>
+        <button onclick="choosePet('cat')">Cat 🐱</button>
+        <button onclick="choosePet('dog')">Dog 🐶</button>
+        <button onclick="choosePet('bunny')">Bunny 🐰</button>
+    </div>
+
+    <!-- Pet display -->
+    <div id="pet-area" style="display:none;">
+        <img id="pet-image" src="" alt="Your Pet">
+        <div id="stats">
+            Hunger: <span id="hunger">0</span><br>
+            Happiness: <span id="happiness">0</span>
+        </div>
+        <button onclick="feedPet()">Feed</button>
+        <button onclick="playWithPet()">Play</button>
+    </div>
 
     <script>
-        // Array of daily cats
-        const cats = [
-            {
-                name: "Whiskers",
-                subtitle: "Loves sunny spots and naps all day.",
-                image: "https://cdn2.thecatapi.com/images/MTY3ODIyMQ.jpg"
-            },
-            {
-                name: "Mittens",
-                subtitle: "Playful and curious, enjoys chasing shadows.",
-                image: "https://cdn2.thecatapi.com/images/MTY3ODI1MQ.jpg"
-            },
-            {
-                name: "Luna",
-                subtitle: "Quiet and mysterious, loves cozy blankets.",
-                image: "https://cdn2.thecatapi.com/images/MTY3ODI2MQ.jpg"
-            },
-            {
-                name: "Simba",
-                subtitle: "Bold explorer, king of the living room.",
-                image: "https://cdn2.thecatapi.com/images/MTY3ODI4MQ.jpg"
-            },
-            {
-                name: "Cleo",
-                subtitle: "Elegant and graceful, enjoys warm cups of tea nearby.",
-                image: "https://cdn2.thecatapi.com/images/MTY3ODI5MQ.jpg"
+        // Load username if exists
+        if(localStorage.getItem('username')) {
+            document.getElementById('username-input').value = localStorage.getItem('username');
+            startGame();
+        }
+
+        let pet = null;
+        let hunger = 50;
+        let happiness = 50;
+
+        function setUsername() {
+            const username = document.getElementById('username-input').value.trim();
+            if(username === '') {
+                alert('Please enter a username!');
+                return;
             }
-            // Add more cats here if you want
-        ];
-
-        // Function to show cat based on day
-        function showDailyCat() {
-            const today = new Date();
-            const index = today.getDate() % cats.length;
-            const cat = cats[index];
-            document.getElementById("cat-image").src = cat.image;
-            document.getElementById("cat-title").innerText = cat.name;
-            document.getElementById("cat-subtitle").innerText = cat.subtitle;
+            localStorage.setItem('username', username);
+            startGame();
         }
 
-        // Function to show random cat when button clicked
-        function showRandomCat() {
-            const index = Math.floor(Math.random() * cats.length);
-            const cat = cats[index];
-            document.getElementById("cat-image").src = cat.image;
-            document.getElementById("cat-title").innerText = cat.name;
-            document.getElementById("cat-subtitle").innerText = cat.subtitle;
+        function startGame() {
+            document.getElementById('username-section').style.display = 'none';
+            document.getElementById('username-display').innerText = 'Welcome, ' + localStorage.getItem('username') + '!';
+            document.getElementById('pet-selection').style.display = 'block';
+
+            // Load pet if exists
+            const savedPet = JSON.parse(localStorage.getItem('petData'));
+            if(savedPet) {
+                pet = savedPet.type;
+                hunger = savedPet.hunger;
+                happiness = savedPet.happiness;
+                showPet();
+            }
         }
 
-        // Global visit counter using CountAPI
-        fetch('https://api.countapi.xyz/hit/yourusername/dailycat')
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('visits').innerText = 
-            "This website has been visited " + data.value + " times!";
-        });
+        function choosePet(type) {
+            pet = type;
+            hunger = 50;
+            happiness = 50;
+            savePet();
+            showPet();
+        }
 
-        // Show the daily cat on load
-        showDailyCat();
+        function showPet() {
+            document.getElementById('pet-selection').style.display = 'none';
+            document.getElementById('pet-area').style.display = 'block';
+
+            const images = {
+                cat: 'https://cdn2.thecatapi.com/images/MTY3ODIyMQ.jpg',
+                dog: 'https://images.dog.ceo/breeds/beagle/n02088364_11136.jpg',
+                bunny: 'https://upload.wikimedia.org/wikipedia/commons/3/33/White_rabbit_facing_right.jpg'
+            };
+
+            document.getElementById('pet-image').src = images[pet];
+            updateStats();
+        }
+
+        function feedPet() {
+            hunger = Math.max(0, hunger - 10);
+            happiness = Math.min(100, happiness + 5);
+            updateStats();
+            savePet();
+        }
+
+        function playWithPet() {
+            happiness = Math.min(100, happiness + 10);
+            hunger = Math.min(100, hunger + 5);
+            updateStats();
+            savePet();
+        }
+
+        function updateStats() {
+            document.getElementById('hunger').innerText = hunger;
+            document.getElementById('happiness').innerText = happiness;
+        }
+
+        function savePet() {
+            localStorage.setItem('petData', JSON.stringify({
+                type: pet,
+                hunger: hunger,
+                happiness: happiness
+            }));
+        }
+
+        // Stats decrease over time
+        setInterval(() => {
+            if(pet) {
+                hunger = Math.min(100, hunger + 1);
+                happiness = Math.max(0, happiness - 1);
+                updateStats();
+                savePet();
+            }
+        }, 60000); // every 1 minute
+
     </script>
 
 </body>
