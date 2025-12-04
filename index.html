@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <title>RETROPAGE</title>
 <style>
-    /* Import 8-bit retro font */
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
     body {
         margin: 0;
         padding: 0;
         height: 100vh;
+        box-sizing: border-box;
         font-family: 'Press Start 2P', monospace;
-        background: #2762e9; /* Retro blue */
+        background: #2762e9;
         color: #fff;
         display: flex;
         flex-direction: column;
@@ -21,8 +21,6 @@
         position: relative;
         overflow: hidden;
     }
-
-    /* Retro geometric corner graphic */
     .bg-art {
         position: absolute;
         top: 0;
@@ -44,6 +42,7 @@
             0 2px 0 #173379,
             4px 4px 0 #1c407d,
             0 0 10px #21316e;
+        z-index: 1;
     }
 
     p {
@@ -55,10 +54,11 @@
         text-shadow:
             0 2px 0 #173379,
             0 0 8px #1c407d;
+        z-index: 1;
     }
 
     .madeby {
-        margin-top: 45px;
+        margin-top: 35px;
         font-size: 1rem;
         color: #ffe245;
         font-family: inherit;
@@ -69,28 +69,63 @@
         text-shadow: 2px 2px 0 #173379;
         box-shadow: 0 1px 13px #17337944;
         border: 2px solid #ffe24512;
+        z-index: 1;
+    }
+
+    .about {
+        font-size: 0.93rem;
+        margin-top: 14px;
+        max-width: 480px;
+        background: rgba(0,22,130,0.13);
+        color: #d2ebff;
+        border-radius: 7px;
+        border: 2px solid #17337933;
+        padding: 10px 16px;
+        text-shadow: 1px 1px 0 #17337933;
+        font-family: inherit;
+        z-index: 1;
+    }
+
+    .datetime {
+        font-size: 0.9rem;
+        color: #f2c234;
+        font-family: inherit;
+        position: fixed;
+        right: 24px;
+        bottom: 14px;
+        text-shadow: 2px 2px 0 #173379, 0 0 6px #1c407d;
+        background: rgba(20,40,130,0.13);
+        padding: 6px 14px;
+        border-radius: 7px;
+        border: 2px solid #ffe24512;
+        z-index: 2;
+        letter-spacing: 1.5px;
+        user-select: none;
+        pointer-events: none;
     }
 </style>
 </head>
 <body>
     <svg class="bg-art" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <!-- Simple lower right retro pixel triangle -->
         <polygon points="100,100 70,100 100,70"
             fill="#143074" opacity="0.45"/>
-        <!-- Simple upper left pixel triangle -->
         <polygon points="0,0 30,0 0,30"
             fill="#143074" opacity="0.43"/>
-        <!-- Top right slant bar -->
         <rect x="80" y="0" width="20" height="5"
             fill="#143074" opacity="0.38"/>
-        <!-- Bottom left slant bar -->
         <rect x="0" y="95" width="20" height="5"
             fill="#143074" opacity="0.34"/>
     </svg>
-    <h1>RETROPAGE</h1>
+    <h1>RETRO INDEX</h1>
     <p id="daily"></p>
     <p id="alltime"></p>
     <div class="madeby">made by felipickle</div>
+    <div class="about">
+        This is my website.<br>
+        It is very cool,<br>
+       give the link to someone near u.
+    </div>
+    <div class="datetime" id="datetime"></div>
 <script>
 function getToday() {
     return new Date().toISOString().split("T")[0];
@@ -119,6 +154,22 @@ localStorage.setItem("visits_daily", daily);
 // Display on screen
 document.getElementById("daily").textContent = "Daily Visits: " + daily;
 document.getElementById("alltime").textContent = "All-Time Visits: " + allTime;
+
+// Date and time (bottom right)
+function pad(n){ return n<10 ? '0'+n : n; }
+function updateDateTime() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = pad(now.getMonth() + 1);
+    const d = pad(now.getDate());
+    const hrs = pad(now.getHours());
+    const min = pad(now.getMinutes());
+    const sec = pad(now.getSeconds());
+    document.getElementById('datetime').textContent =
+        `Date: ${y}-${m}-${d} | Time: ${hrs}:${min}:${sec}`;
+}
+updateDateTime();
+setInterval(updateDateTime, 1000);
 </script>
 </body>
 </html>
