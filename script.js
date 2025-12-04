@@ -75,7 +75,10 @@ function buildingCost(key, amount=1){
   const b = buildings[key]
   const owned = state.buildings[key]
   const base = b.baseCost * Math.pow(b.costScale, owned)
-  return Math.floor(base * amount)
+  // apply cost efficiency upgrades (multiplicative 10% per level)
+  const costEffLevel = state.upgrades.costEff || 0
+  const costMultiplier = Math.pow(0.9, costEffLevel)
+  return Math.floor(base * costMultiplier * amount)
 }
 
 // buy building
@@ -100,6 +103,7 @@ function tick(){
 
   // generate from buildings
   const mineOut = state.buildings.mine * (buildings.mine.produces.metal * prodMult)
+  // add produced metal (can be fractional)
   state.metal += mineOut
 
   const refineryCount = state.buildings.refinery
@@ -127,13 +131,19 @@ function tick(){
 
   // passive credits from parts stored
   const creditFromParts = Math.floor(state.parts * 0.02)
-  if (creditFromParts>0){ state.credits += creditFromParts; state.totalCreditsEarned += creditFromParts; state.parts -= creditFromParts }
+  if (creditFromParts>0){
+    state.credits += creditFromParts
+    state.totalCreditsEarned += creditFromParts
+    state.parts -= creditFromParts
+  }
 
   // automation: build cheapest if enabled
   if (state.automation){
-    for (const k of Object.keys(buildings)){
-      const c = buildingCost(k)
-      if (state.credits >= c){ buyBuilding(k); break }
+    // try to buy the cheapest affordable building
+    const affordable = Object.keys(buildings).map(k=>({k,c:buildingCost(k)})).filter(x=> state.credits >= x.c)
+    if (affordable.length>0){
+      affordable.sort((a,b)=>a.c-b.c)
+      buyBuilding(affordable[0].k)
     }
   }
 
