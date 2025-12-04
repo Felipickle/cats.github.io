@@ -2,41 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Index</title>
+<title>RETRO INDEX</title>
 <style>
+    /* Import 8-bit retro font */
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
     body {
         margin: 0;
+        padding: 0;
         height: 100vh;
-        font-family: sans-serif;
+        font-family: 'Press Start 2P', monospace;
+        background: #2762e9; /* Retro blue */
+        color: #fff;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 24px;
-        background: #222;
-        color: #fff;
+        position: relative;
+        overflow: hidden;
     }
-    .counter-box {
-        padding: 18px 32px;
-        background: rgba(0,0,0,0.6);
-        border-radius: 10px;
-        border: 2px solid #4ecdc4;
-        box-shadow: 0 2px 16px #0008;
-        text-align: center;
+
+    /* Retro geometric corner graphic */
+    .bg-art {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 0;
     }
+
     h1 {
-        margin: 0;
+        font-size: 2.8rem;
+        letter-spacing: 4px;
+        margin-bottom: 26px;
+        margin-top: 0;
+        font-family: inherit;
+        color: #fff;
+        text-shadow:
+            0 2px 0 #173379,
+            4px 4px 0 #1c407d,
+            0 0 10px #21316e;
+    }
+
+    p {
+        font-size: 1.4rem;
+        font-family: inherit;
         letter-spacing: 2px;
-        font-size: 2.5rem;
+        margin: 15px 0;
+        color: #f6f6f6;
+        text-shadow:
+            0 2px 0 #173379,
+            0 0 8px #1c407d;
+    }
+
+    .madeby {
+        margin-top: 45px;
+        font-size: 1rem;
+        color: #ffe245;
+        font-family: inherit;
+        letter-spacing: 1px;
+        background: rgba(0,0,0,0.13);
+        padding: 6px 20px;
+        border-radius: 7px;
+        text-shadow: 2px 2px 0 #173379;
+        box-shadow: 0 1px 13px #17337944;
+        border: 2px solid #ffe24512;
     }
 </style>
 </head>
 <body>
-    <h1>Index</h1>
-    <div class="counter-box">
-        <p id="daily"></p>
-        <p id="alltime"></p>
-    </div>
+    <svg class="bg-art" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <!-- Simple lower right retro pixel triangle -->
+        <polygon points="100,100 70,100 100,70"
+            fill="#143074" opacity="0.45"/>
+        <!-- Simple upper left pixel triangle -->
+        <polygon points="0,0 30,0 0,30"
+            fill="#143074" opacity="0.43"/>
+        <!-- Top right slant bar -->
+        <rect x="80" y="0" width="20" height="5"
+            fill="#143074" opacity="0.38"/>
+        <!-- Bottom left slant bar -->
+        <rect x="0" y="95" width="20" height="5"
+            fill="#143074" opacity="0.34"/>
+    </svg>
+    <h1>RETRO INDEX</h1>
+    <p id="daily"></p>
+    <p id="alltime"></p>
+    <div class="madeby">made by yours truly</div>
 <script>
 function getToday() {
     return new Date().toISOString().split("T")[0];
