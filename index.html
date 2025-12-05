@@ -1,614 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Space Company — Cleaner Edition</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8">
+<title>GalaxyHub</title>
 <style>
-  :root{
-    --bg-1: #030615;
-    --bg-2: #07132a;
-    --panel: rgba(255,255,255,0.03);
-    --glass: rgba(255,255,255,0.04);
-    --accent: #55e6d5;
-    --accent-2: #ffd166;
-    --muted: #98a8b9;
-    --card:#0e2130;
-    --success:#7ef5a6;
-  }
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #101020;
+        color: white;
+        transition: background 1s;
+        text-align: center;
+    }
 
-  * { box-sizing: border-box; }
-  body{
-    margin:0;
-    min-height:100vh;
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    color: #e6f3f2;
-    background:
-      radial-gradient(600px 300px at 10% 10%, rgba(85,230,213,0.04), transparent 10%),
-      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    padding:28px;
-  }
+    #topbar {
+        background: #1c1c2b;
+        padding: 20px;
+        font-size: 30px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px #000;
+    }
 
-  .container{
-    max-width:1100px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns: 1fr 360px;
-    gap:20px;
-    align-items:start;
-  }
+    .button {
+        background: #3b3be0;
+        padding: 15px 25px;
+        border-radius: 8px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin: 10px;
+        font-size: 18px;
+        transition: 0.2s;
+    }
+    .button:hover {
+        background: #6060ff;
+        transform: scale(1.05);
+    }
 
-  header{
-    grid-column: 1 / -1;
-    display:flex;
-    gap:16px;
-    align-items:center;
-    margin-bottom:6px;
-  }
+    #content {
+        padding: 30px;
+    }
 
-  .logo{
-    width:72px;height:72px;border-radius:14px;
-    background:linear-gradient(135deg,var(--accent), #00a9ff);
-    display:flex;align-items:center;justify-content:center;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-    font-family:'Press Start 2P', monospace;
-    font-size:16px;color:#021018;
-    border: 1px solid rgba(255,255,255,0.03);
-  }
-
-  h1{margin:0;font-size:20px;font-weight:800}
-  .subtitle{color:var(--muted);font-size:13px;margin-top:4px;}
-
-  /* panels */
-  .panel{
-    background: linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.01));
-    border-radius:12px;
-    padding:16px;
-    border:1px solid rgba(255,255,255,0.03);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-  }
-
-  .main{
-    min-height:520px;
-  }
-
-  .topbar{
-    display:flex;
-    gap:16px;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-  }
-
-  .credits {
-    display:flex;flex-direction:column;
-    text-align:right;
-  }
-  .credits .label{font-size:13px;color:var(--muted);}
-  .credits .value{font-size:28px;font-weight:800;color:var(--accent);letter-spacing:0.6px;}
-  .per-sec{font-size:13px;color:var(--muted);margin-top:4px;}
-
-  .btn-primary{
-    background: linear-gradient(180deg,var(--accent-2), #ffb84d);
-    color:#071018;
-    border:none;
-    padding:10px 16px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:700;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
-  }
-
-  .grid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:12px;
-  }
-
-  .card{
-    background: var(--card);
-    border-radius:10px;
-    padding:12px;
-    border:1px solid rgba(255,255,255,0.02);
-  }
-
-  .card h3{margin:0;font-size:14px;color:var(--accent-2)}
-  .muted{color:var(--muted);font-size:13px}
-
-  /* buildings */
-  .building{
-    display:flex;
-    gap:12px;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px;
-    border-radius:8px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.007), rgba(255,255,255,0.004));
-    border:1px solid rgba(255,255,255,0.02);
-  }
-
-  .b-info{flex:1}
-  .b-name{font-weight:700;color:#ffe7b6}
-  .b-meta{font-size:12px;color:var(--muted);margin-top:6px}
-  .b-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
-  .small{font-size:12px;padding:8px 10px;border-radius:8px;cursor:pointer;border:none}
-  .small.buy{background:#3b9fef;color:#021018;font-weight:700}
-  .small.disabled{opacity:0.45;cursor:default;background:#334455;color:#8899aa}
-
-  /* upgrades list */
-  .upgrade{
-    display:flex;gap:12px;align-items:center;justify-content:space-between;padding:8px;border-radius:6px;background:rgba(255,255,255,0.01);
-  }
-
-  .rightbar .section{margin-bottom:12px}
-  .rightbar h4{margin:0;color:var(--accent-2);font-size:13px}
-  .small-row{display:flex;gap:8px}
-  .small-row button{flex:1}
-
-  .footer{grid-column:1 / -1;margin-top:12px;color:var(--muted);font-size:12px;text-align:center}
-
-  /* responsive */
-  @media (max-width:980px){
-    .container{grid-template-columns:1fr}
-  }
-
-  /* helper visuals */
-  .stat{
-    display:flex;flex-direction:column;gap:6px;
-    padding:10px;border-radius:8px;background:rgba(255,255,255,0.01);
-  }
-  .stat .label{font-size:12px;color:var(--muted)}
-  .stat .value{font-weight:800;font-size:18px;color:var(--accent)}
-  .progress {
-    height:10px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;margin-top:6px;
-  }
-  .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#00a9ff);width:0%}
+    .resource-box {
+        background: #252542;
+        padding: 20px;
+        border-radius: 10px;
+        display: inline-block;
+        margin: 10px;
+        width: 200px;
+    }
 </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="logo">SC</div>
-      <div>
-        <h1>Space Company — Refined</h1>
-        <div class="subtitle">Click to launch, buy buildings & upgrades, and grow your space empire</div>
-      </div>
 
-      <div style="margin-left:auto">
-        <div class="credits">
-          <div class="label">Credits</div>
-          <div class="value" id="credits">0</div>
-          <div class="per-sec" id="income">+0 / sec</div>
-        </div>
-      </div>
-    </header>
+<div id="topbar">🚀 GalaxyHub</div>
 
-    <!-- main -->
-    <main class="panel main">
-      <div class="topbar">
-        <div style="display:flex;gap:12px;align-items:center">
-          <button class="btn-primary" id="click-earn">LAUNCH</button>
-          <div style="min-width:220px">
-            <div class="muted">Click to earn Credits. Use Credits to buy buildings & upgrades.</div>
-          </div>
-        </div>
+<div id="content">
+    <h2>Welcome Commander!</h2>
+    <p>Select a destination:</p>
 
-        <div style="display:flex;gap:8px;align-items:center">
-          <div class="muted">Tick:</div>
-          <div style="background:var(--glass);padding:8px;border-radius:8px;font-weight:700;color:var(--accent)"><span id="tick">1s</span></div>
-        </div>
-      </div>
+    <button class="button" onclick="goHub()">Return to Hub</button>
+    <button class="button" onclick="travel('terra')">🌍 Terra</button>
+    <button class="button" onclick="travel('ember')">🔥 Ember</button>
+</div>
 
-      <section class="grid">
-        <div class="card">
-          <h3>Buildings</h3>
-          <p class="muted">Buy buildings to increase passive Credits per second (CPS). Costs grow after each purchase.</p>
-          <div id="buildings-list" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>
-        </div>
-
-        <div class="card">
-          <h3>Upgrades</h3>
-          <p class="muted">Permanent boosts. Buy wisely.</p>
-          <div id="upgrades-list" style="display:flex;flex-direction:column;gap:8px;margin-top:10px"></div>
-        </div>
-
-        <div class="card" style="grid-column:1 / -1;">
-          <h3>Statistics</h3>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-            <div class="stat">
-              <div class="label">Total Clicks</div>
-              <div class="value" id="stat-clicks">0</div>
-            </div>
-            <div class="stat">
-              <div class="label">Total Buildings</div>
-              <div class="value" id="stat-buildings">0</div>
-            </div>
-            <div class="stat">
-              <div class="label">Play Time</div>
-              <div class="value" id="stat-playtime">0s</div>
-            </div>
-            <div class="stat" style="min-width:220px">
-              <div class="label">Click Power</div>
-              <div class="value" id="stat-click-power">1</div>
-              <div class="progress"><i id="clickbar" style="width:10%"></i></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- right column -->
-    <aside class="panel rightbar">
-      <div class="section">
-        <h4>Save & Controls</h4>
-        <p class="muted">Progress is auto-saved. You can also manually save, export, import, or reset.</p>
-        <div class="small-row" style="margin-top:8px">
-          <button class="btn-primary" id="save">Save</button>
-          <button class="btn-primary" id="reset">Reset</button>
-        </div>
-        <div style="height:8px"></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn-primary" id="export">Export</button>
-          <button class="btn-primary" id="import">Import</button>
-        </div>
-        <p id="last-saved" class="muted" style="margin-top:8px">Last save: never</p>
-      </div>
-
-      <div class="section">
-        <h4>Quick Tips</h4>
-        <p class="muted">Start by buying a Rocket Lab, then Satellite Factories. Save for Research Centers and Upgrades.</p>
-      </div>
-
-      <div class="section">
-        <h4>About</h4>
-        <p class="muted">This version improves visuals, adds more upgrades, offline earnings, and correct buy logic.</p>
-      </div>
-    </aside>
-
-    <div class="footer panel">
-      Built for GitHub Pages • All data saved locally in your browser.
-    </div>
-  </div>
 
 <script>
-/* -------------------------
-   Improved Space Company Tiny
-   - prettier UI
-   - more buildings & upgrades
-   - proper enable/disable for buttons
-   - offline progress on load
-   - save / export / import / reset
-   ------------------------- */
-
-const SAVE_KEY = 'spacecompany_clean_v1';
-
-/* -------------------------
-   Game state & definitions
-   ------------------------- */
-let state = {
-  credits: 50,
-  clickValue: 1,
-  totalClicks: 0,
-  totalBuildings: 0,
-  playSeconds: 0,
-  buildings: {},
-  upgrades: {},
-  lastTick: Date.now(),
-  savedAt: null
+// ---------------------
+// GAME STATE
+// ---------------------
+let resources = {
+    iron: 0,
+    crystal: 0,
+    emberDust: 0
 };
 
-// Buildings (expanded)
-const BUILDING_DEFS = [
-  { id:'rocketLab', name:'Rocket Lab', baseCost: 15, baseCps: 0.2, desc:'Launch small rockets.' },
-  { id:'satFactory', name:'Satellite Factory', baseCost: 120, baseCps: 1.2, desc:'Produce satellites.' },
-  { id:'research', name:'Research Center', baseCost: 900, baseCps: 8, desc:'Improve technology.' },
-  { id:'orbitalShipyard', name:'Orbital Shipyard', baseCost: 5600, baseCps: 45, desc:'Build large spacecraft.' },
-  { id:'spaceport', name:'Spaceport', baseCost: 32000, baseCps: 220, desc:'Major launch operations.' }
-];
+let upgrades = {
+    drill: 1
+};
 
-// Upgrades (more and varied)
-const UPGRADE_DEFS = [
-  { id:'clickBoost', name:'Improved Launchers', cost: 50, desc:'Doubles click earnings', apply: s => s.clickValue *= 2 },
-  { id:'efficiency', name:'Fuel Efficiency', cost: 400, desc:'Buildings produce ×1.5', apply: s => multiplyBuildingOutput(s,1.5) },
-  { id:'automation', name:'Automation Routines', cost: 2500, desc:'All buildings produce +25%', apply: s => multiplyBuildingOutput(s,1.25) },
-  { id:'advancedResearch', name:'Advanced Research', cost: 12000, desc:'All buildings produce ×2', apply: s => multiplyBuildingOutput(s,2) },
-  { id:'clickMastery', name:'Click Mastery', cost: 30000, desc:'Click value ×3', apply: s => s.clickValue *= 3 }
-];
+// Background colors for each planet
+const planetColors = {
+    hub: "#101020",
+    terra: "#203820",
+    ember: "#401010"
+};
 
-/* -------------------------
-   Utility functions
-   ------------------------- */
-function formatNumber(v){
-  if(v >= 1e9) return (v/1e9).toFixed(2) + 'B';
-  if(v >= 1e6) return (v/1e6).toFixed(2) + 'M';
-  if(v >= 1000) return (v/1000).toFixed(2) + 'K';
-  return Math.round(v*100)/100;
+
+// ---------------------
+// SCREEN UPDATES
+// ---------------------
+function updateScreen(html) {
+    document.getElementById("content").innerHTML = html;
 }
 
-function costFor(base, count){
-  // smoother exponential (slightly slower)
-  return Math.floor(base * Math.pow(1.145, count));
+// ---------------------
+// HUB SCREEN
+// ---------------------
+function goHub() {
+    document.body.style.background = planetColors.hub;
+
+    updateScreen(`
+        <h2>🛰 Your Hub Ship</h2>
+
+        <div class="resource-box">
+            <h3>Resources</h3>
+            Iron: ${resources.iron}<br>
+            Crystal: ${resources.crystal}<br>
+            Ember Dust: ${resources.emberDust}
+        </div>
+
+        <h3>Upgrades</h3>
+        <button class="button" onclick="upgradeDrill()">
+            Upgrade Drill (Cost: 20 Iron) <br> Current: Lv ${upgrades.drill}
+        </button>
+        
+        <h3>Travel to Planets</h3>
+        <button class="button" onclick="travel('terra')">🌍 Terra</button>
+        <button class="button" onclick="travel('ember')">🔥 Ember</button>
+    `);
 }
 
-/* -------------------------
-   Init & recalc
-   ------------------------- */
-function initState(){
-  BUILDING_DEFS.forEach(b => {
-    if(!state.buildings[b.id]) state.buildings[b.id] = { count:0, baseCost: b.baseCost, baseCps: b.baseCps };
-  });
-  UPGRADE_DEFS.forEach(u => {
-    if(state.upgrades[u.id] === undefined) state.upgrades[u.id] = false;
-  });
-  recalcCps();
-}
 
-function recalcCps(){
-  let cps = 0;
-  BUILDING_DEFS.forEach(b => {
-    const info = state.buildings[b.id];
-    cps += info.count * info.baseCps;
-  });
-  state.cps = +(cps.toFixed(4));
-}
 
-/* multiply building outputs when upgrades apply */
-function multiplyBuildingOutput(s, factor){
-  BUILDING_DEFS.forEach(b => {
-    s.buildings[b.id].baseCps = +(s.buildings[b.id].baseCps * factor).toFixed(6);
-  });
-  recalcCps();
-}
-
-/* -------------------------
-   Save / Load / Export / Import
-   ------------------------- */
-function saveGame(){
-  state.lastTick = Date.now();
-  state.savedAt = new Date().toISOString();
-  localStorage.setItem(SAVE_KEY, JSON.stringify(state));
-  document.getElementById('last-saved').innerText = 'Last save: ' + state.savedAt;
-}
-
-function loadGame(){
-  const raw = localStorage.getItem(SAVE_KEY);
-  if(!raw) return false;
-  try{
-    const parsed = JSON.parse(raw);
-    // merge with defaults to avoid missing keys
-    state = Object.assign(state, parsed);
-    initState();
-    recalcCps();
-    return true;
-  }catch(e){
-    console.error('Load failed', e);
-    return false;
-  }
-}
-
-function exportSave(){
-  const data = JSON.stringify(state, null, 2);
-  // show prompt with save text
-  const win = window.open('', '_blank');
-  win.document.write('<pre>' + escapeHtml(data) + '</pre>');
-  win.document.title = 'Save Export';
-}
-
-function importSave(){
-  const raw = prompt('Paste JSON save here:');
-  if(!raw) return;
-  try{
-    const parsed = JSON.parse(raw);
-    state = Object.assign(state, parsed);
-    initState();
-    recalcCps();
-    saveGame();
-    renderAll();
-    alert('Import successful!');
-  }catch(e){
-    alert('Invalid JSON');
-  }
-}
-
-function resetGame(){
-  if(!confirm('Reset all progress?')) return;
-  localStorage.removeItem(SAVE_KEY);
-  location.reload();
-}
-
-function escapeHtml(s){ return s.replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-/* -------------------------
-   Game actions
-   ------------------------- */
-function addCredits(v){
-  state.credits = Math.max(0, +(state.credits + v).toFixed(4));
-}
-
-function clickEarn(){
-  addCredits(state.clickValue);
-  state.totalClicks += 1;
-  renderAll();
-}
-
-function buyBuilding(id){
-  const def = BUILDING_DEFS.find(b => b.id === id);
-  const info = state.buildings[id];
-  const price = costFor(def.baseCost, info.count);
-  if(state.credits < price) return;
-  addCredits(-price);
-  info.count += 1;
-  state.totalBuildings += 1;
-  recalcCps();
-  renderAll();
-}
-
-function buyUpgrade(id){
-  const up = UPGRADE_DEFS.find(x => x.id === id);
-  if(!up || state.upgrades[id]) return;
-  if(state.credits < up.cost) return;
-  addCredits(-up.cost);
-  state.upgrades[id] = true;
-  // apply upgrade
-  up.apply(state);
-  recalcCps();
-  renderAll();
-}
-
-/* -------------------------
-   Rendering
-   ------------------------- */
-function renderBuildings(){
-  const container = document.getElementById('buildings-list');
-  container.innerHTML = '';
-  BUILDING_DEFS.forEach(def => {
-    const info = state.buildings[def.id];
-    const price = costFor(def.baseCost, info.count);
-    const node = document.createElement('div');
-    node.className = 'building';
-    node.innerHTML = `
-      <div class="b-info">
-        <div class="b-name">${def.name} <span style="font-size:11px;color:var(--muted)">×${info.count}</span></div>
-        <div class="b-meta">${def.desc} — ${info.baseCps} CPS each</div>
-      </div>
-      <div class="b-actions">
-        <div style="font-weight:700;color:var(--accent)">${formatNumber(info.baseCps * info.count)}/s</div>
-        <button class="small ${state.credits >= price ? 'buy' : 'disabled'}" ${state.credits >= price ? '' : 'disabled'} onclick="buyBuilding('${def.id}')">Buy ${formatNumber(price)}</button>
-      </div>`;
-    container.appendChild(node);
-  });
-}
-
-function renderUpgrades(){
-  const container = document.getElementById('upgrades-list');
-  container.innerHTML = '';
-  UPGRADE_DEFS.forEach(up => {
-    const bought = state.upgrades[up.id];
-    const node = document.createElement('div');
-    node.className = 'upgrade';
-    node.innerHTML = `
-      <div style="flex:1">
-        <div style="font-weight:700;color:${bought ? 'var(--success)' : '#ffd6a5'}">${up.name} ${bought ? '✓' : ''}</div>
-        <div class="muted" style="font-size:13px;margin-top:6px">${up.desc}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-        <div class="muted" style="font-size:13px">${bought ? 'Purchased' : formatNumber(up.cost)}</div>
-        <button class="small ${(!bought && state.credits >= up.cost) ? 'buy' : 'disabled'}" ${(!bought && state.credits >= up.cost) ? '' : 'disabled'} onclick="buyUpgrade('${up.id}')">${bought ? 'Owned' : 'Buy'}</button>
-      </div>`;
-    container.appendChild(node);
-  });
-}
-
-function renderStats(){
-  document.getElementById('credits').innerText = formatNumber(state.credits);
-  document.getElementById('income').innerText = '+' + formatNumber(state.cps || 0) + ' / sec';
-  document.getElementById('stat-clicks').innerText = state.totalClicks;
-  document.getElementById('stat-buildings').innerText = state.totalBuildings;
-  document.getElementById('stat-click-power').innerText = state.clickValue;
-  const s = Math.floor(state.playSeconds);
-  let txt = s + 's';
-  if(s >= 60){
-    const m = Math.floor(s/60);
-    const sec = s%60;
-    txt = m + 'm ' + sec + 's';
-  }
-  document.getElementById('stat-playtime').innerText = txt;
-
-  // click power bar visual (0-100)
-  const pct = Math.min(100, (state.clickValue / 10) * 100);
-  document.getElementById('clickbar').style.width = pct + '%';
-}
-
-function renderAll(){
-  renderBuildings();
-  renderUpgrades();
-  renderStats();
-}
-
-/* -------------------------
-   Main loop & offline
-   ------------------------- */
-function tick(seconds){
-  const gain = (state.cps || 0) * seconds;
-  if(gain) addCredits(gain);
-  state.playSeconds += seconds;
-}
-
-function handleOffline(){
-  const raw = localStorage.getItem(SAVE_KEY);
-  if(!raw) return;
-  try{
-    const parsed = JSON.parse(raw);
-    if(parsed.lastTick){
-      const elapsedSec = Math.floor((Date.now() - parsed.lastTick) / 1000);
-      if(elapsedSec > 0){
-        // compute saved cps
-        let savedCps = 0;
-        BUILDING_DEFS.forEach(b => {
-          const count = (parsed.buildings && parsed.buildings[b.id] && parsed.buildings[b.id].count) || 0;
-          const base = (parsed.buildings && parsed.buildings[b.id] && parsed.buildings[b.id].baseCps) || b.baseCps;
-          savedCps += count * base;
-        });
-        const offlineGain = savedCps * elapsedSec;
-        if(offlineGain > 0){
-          alert('Welcome back! You earned ' + formatNumber(offlineGain) + ' credits while away (' + elapsedSec + 's).');
-          parsed.credits = (parsed.credits || 0) + offlineGain;
-          parsed.playSeconds = (parsed.playSeconds || 0) + elapsedSec;
-          parsed.lastTick = Date.now();
-          localStorage.setItem(SAVE_KEY, JSON.stringify(parsed));
-        }
-      }
+// ---------------------
+// DRILL UPGRADE
+// ---------------------
+function upgradeDrill() {
+    if (resources.iron >= 20) {
+        resources.iron -= 20;
+        upgrades.drill++;
+        goHub();
+    } else {
+        alert("Not enough iron!");
     }
-  }catch(e){ console.error(e); }
 }
 
-function mainLoop(){
-  const now = Date.now();
-  const elapsed = now - (state.lastTick || now);
-  const seconds = Math.floor(elapsed / 1000);
-  if(seconds >= 1){
-    tick(seconds);
-    state.lastTick = now;
-    recalcCps();
-    renderAll();
-    saveGame();
-  }
-  setTimeout(mainLoop, 1000 - (Date.now() % 1000) + 25);
+
+
+// ---------------------
+// PLANET SYSTEM
+// ---------------------
+function travel(planet) {
+    document.body.style.background = planetColors[planet];
+
+    if (planet === "terra") showTerra();
+    if (planet === "ember") showEmber();
 }
 
-/* -------------------------
-   UI events wiring
-   ------------------------- */
-document.getElementById('click-earn').addEventListener('click', ()=>{
-  clickEarn();
-  renderAll();
-});
 
-document.getElementById('save').addEventListener('click', ()=>{
-  saveGame();
-  alert('Saved!');
-});
-document.getElementById('export').addEventListener('click', exportSave);
-document.getElementById('import').addEventListener('click', importSave);
-document.getElementById('reset').addEventListener('click', resetGame);
 
-/* -------------------------
-   Start
-   ------------------------- */
-initState();
-loadGame();
-handleOffline();
-recalcCps();
-renderAll();
-document.getElementById('last-saved').innerText = state.savedAt ? 'Last save: ' + state.savedAt : 'Last save: never';
-state.lastTick = state.lastTick || Date.now();
-mainLoop();
+// ---------------------
+// PLANETS
+// ---------------------
 
+// 🌍 Terra (Iron & Crystal)
+function showTerra() {
+    updateScreen(`
+        <h2>🌍 Terra</h2>
+        <p>Lush green world with basic minerals.</p>
+
+        <div class="resource-box">
+            Iron: ${resources.iron}<br>
+            Crystal: ${resources.crystal}
+        </div>
+
+        <button class="button" onclick="mineTerra()">Mine (Iron + Crystal)</button>
+        <br><br>
+        <button class="button" onclick="goHub()">Return to Hub</button>
+    `);
+}
+
+function mineTerra() {
+    resources.iron += 5 * upgrades.drill;
+    resources.crystal += 2 * upgrades.drill;
+    showTerra();
+}
+
+
+
+// 🔥 Ember (Ember Dust)
+function showEmber() {
+    updateScreen(`
+        <h2>🔥 Ember</h2>
+        <p>A volcanic world full of rare ember dust.</p>
+
+        <div class="resource-box">
+            Ember Dust: ${resources.emberDust}
+        </div>
+
+        <button class="button" onclick="mineEmber()">Collect Ember Dust</button>
+        <br><br>
+        <button class="button" onclick="goHub()">Return to Hub</button>
+    `);
+}
+
+function mineEmber() {
+    resources.emberDust += 3 * upgrades.drill;
+    showEmber();
+}
+
+
+
+// ---------------------
+goHub(); // start game
+// ---------------------
 </script>
 </body>
 </html>
